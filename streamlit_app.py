@@ -113,12 +113,28 @@ p, label, .stMarkdown, .css-1jc7o2r, .css-1l0bqyk, .css-1vq4p4u, .css-1qxtsq5, .
 """, unsafe_allow_html=True)
 
 # Load the pre-trained model
-# Use the newer Keras model format for better compatibility with recent TensorFlow versions.
-MODEL_PATH = 'fruit_fresh_spoiled_model.keras'
+# Instead of deserializing the full model (which can be brittle across TF/Keras versions),
+# we rebuild the architecture in code (as in the training notebook) and load the trained weights.
+WEIGHTS_PATH = 'fruit_fresh_spoiled_weights.h5'
 
 @st.cache_resource
 def load_my_model():
-    model = tf.keras.models.load_model(MODEL_PATH)
+    base = tf.keras.applications.MobileNetV2(
+        input_shape=(150, 150, 3),
+        include_top=False,
+        weights=None,  # weights will be restored from WEIGHTS_PATH
+    )
+    base.trainable = False
+
+    model = tf.keras.Sequential([
+        base,
+        tf.keras.layers.GlobalAveragePooling2D(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dense(1, activation='sigmoid'),
+    ])
+
+    model.load_weights(WEIGHTS_PATH)
     return model
 
 model = load_my_model()
