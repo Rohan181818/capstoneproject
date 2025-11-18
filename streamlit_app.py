@@ -113,7 +113,8 @@ p, label, .stMarkdown, .css-1jc7o2r, .css-1l0bqyk, .css-1vq4p4u, .css-1qxtsq5, .
 """, unsafe_allow_html=True)
 
 # Load the pre-trained model
-MODEL_PATH = 'fruit_fresh_spoiled_model.h5'
+# Use the newer Keras model format for better compatibility with recent TensorFlow versions.
+MODEL_PATH = 'fruit_fresh_spoiled_model.keras'
 
 @st.cache_resource
 def load_my_model():
