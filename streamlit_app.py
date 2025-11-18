@@ -115,7 +115,7 @@ p, label, .stMarkdown, .css-1jc7o2r, .css-1l0bqyk, .css-1vq4p4u, .css-1qxtsq5, .
 # Load the pre-trained model
 # Instead of deserializing the full model (which can be brittle across TF/Keras versions),
 # we rebuild the architecture in code (as in the training notebook) and load the trained weights.
-WEIGHTS_PATH = 'fruit_fresh_spoiled_weights.h5'
+WEIGHTS_PATH = 'fruit_fresh_spoiled.weights.h5'
 
 @st.cache_resource
 def load_my_model():
